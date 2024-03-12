@@ -58,11 +58,6 @@ Route::prefix('dashboard')->group(function () {
         Route::delete('/laptops/{id}/delete', [LaptopController::class, 'destroy'])->name('laptops.destroy');
         Route::post('/laptops/import/store', [LaptopController::class, 'importStore'])->name('laptops.import');
 
-        Route::get('/history-laptop', [HistoryLaptopController::class, 'index'])->name('history-laptop.index');
-        Route::get('/history-laptop/create', [HistoryLaptopController::class, 'create'])->name('history-laptop.create');
-        Route::post('/history-laptop/store', [HistoryLaptopController::class, 'store'])->name('history-laptop.store');
-        Route::post('/history-laptop/import/store', [HistoryLaptopController::class, 'import'])->name('history-laptop.import');
-
         Route::get('/it-suport', [ItsupportController::class, 'index'])->name('it.index');
         Route::get('/it-suport/crate', [ItsupportController::class, 'create'])->name('it.create');
         Route::post('/it-suport/store', [ItsupportController::class, 'store'])->name('it.store');
@@ -71,6 +66,13 @@ Route::prefix('dashboard')->group(function () {
         Route::get('/it-suport/{id}/edit', [ItsupportController::class, 'edit'])->name('it.edit');
         Route::put('/it-suport/{id}/update', [ItsupportController::class, 'update'])->name('it.update');
         Route::delete('/it-suport/{id}/delete', [ItsupportController::class, 'destroy'])->name('it.destroy');
+
+        Route::get('/history-laptop', [HistoryLaptopController::class, 'index'])->name('history-laptop.index');
+        Route::get('/history-laptop/create', [HistoryLaptopController::class, 'create'])->name('history-laptop.create');
+        Route::post('/history-laptop/store', [HistoryLaptopController::class, 'store'])->name('history-laptop.store');
+        Route::post('/history-laptop/import/store', [HistoryLaptopController::class, 'import'])->name('history-laptop.import');
+        Route::get('/history-laptop/{id}/history/pegawai', [HistoryLaptopController::class, 'showPegawai'])->name('history-laptop.detail.pegawai');
+        Route::get('/history-laptop/{id}/history/laptop', [HistoryLaptopController::class, 'showLaptop'])->name('history-laptop.detail.laptop');
 
         Route::get('/report', [LaporanController::class, 'index'])->name('laporan.index');
     });

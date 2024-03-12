@@ -90,24 +90,24 @@
                                         <td>
                                             @if ($history->kembali == null && $history->rotasi == null)
                                                 <span class="badge badge-success">Penyerahan</span>
-                                            @elseif($history->rotasi != null)
+                                            @elseif($history->rotasi != null && $history->kembali == null)
                                                 <span class="badge badge-warning">Rotasi</span>
                                             @else
                                                 <span class="badge badge-danger">Pengembalian</span>
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="#"
+                                            <a href="{{ route('history-laptop.detail.pegawai', ['id' => $history->pegawai_id]) }}"
                                                 class="btn btn-info btn-rounded waves-effect waves-light btn-sm">
                                                 <span class="btn-label"><i
-                                                        class="mdi mdi-alert-circle-outline"></i></span>Detail
+                                                        class="mdi mdi-alert-circle-outline"></i></span>Detail Pegawai
                                             </a>
-                                            {{-- <a href="{{ route('pegawai.edit', ['id' => $HLaptops->id]) }}" class="btn btn-warning btn-rounded waves-effect waves-light btn-sm">
-                                                <span class="btn-label"><i class="mdi mdi-alert"></i></span>Ubah
+
+                                            <a href="{{ route('history-laptop.detail.laptop', ['id' => $history->laptop_id]) }}"
+                                                class="btn btn-info btn-rounded waves-effect waves-light btn-sm">
+                                                <span class="btn-label"><i
+                                                        class="mdi mdi-alert-circle-outline"></i></span>Detail Laptop
                                             </a>
-                                            <a href="{{ route('pegawai.destroy', ['id' => $HLaptops->id]) }}" class="btn btn-rounded btn-danger waves-effect waves-light btn-sm" data-confirm-delete="true" style="pointer-events: none; display: inline-block;" id="hapus">
-                                                <span class="btn-label"><i class="mdi mdi-close-circle-outline"></i></span>Hapus
-                                            </a> --}}
                                         </td>
                                     </tr>
                                 @endforeach

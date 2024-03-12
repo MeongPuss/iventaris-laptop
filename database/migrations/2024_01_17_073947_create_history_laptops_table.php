@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('history_laptops', function (Blueprint $table) {
             $table->id();
-            $table->string('ba');
+            $table->string('ba')->nullable();
             $table->string('unit');
             $table->date('kembali')->nullable();
+            $table->date('rotasi')->nullable();
             $table->date('penyerahan')->nullable();
             $table->integer('status');
             $table->unsignedBigInteger('laptop_id');

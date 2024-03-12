@@ -56,9 +56,22 @@ class HistoryLaptopController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(HistoryLaptop $historyLaptop)
+    public function showPegawai(string $id)
     {
-        //
+        $pegawai = Pegawai::findOrFail($id);
+        $type = 'pegawai';
+        $detail = HistoryLaptop::with(['laptops', 'pegawais'])->where('pegawai_id', $id)->orderByDesc('created_at')->get();
+
+        return view('dashboard.history_laptop.detail', compact('detail', 'type', 'pegawai'));
+    }
+
+    public function showLaptop(string $id)
+    {
+        $laptop = Laptop::findOrFail($id);
+        $type = 'laptop';
+        $detail = HistoryLaptop::with(['laptops', 'pegawais'])->where('laptop_id', $id)->get();
+
+        return view('dashboard.history_laptop.detail', compact('detail', 'type', 'laptop'));
     }
 
     /**
@@ -87,9 +100,9 @@ class HistoryLaptopController extends Controller
 
     public function import(Request $request)
     {
-        // $request->validate([
-        //     'file' => 'required|mimes:xlsx,xls',
-        // ]);
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
 
         $file = $request->file('file');
 
