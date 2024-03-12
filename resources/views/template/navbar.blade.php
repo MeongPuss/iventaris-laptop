@@ -24,7 +24,7 @@
 
                     <li class="nav-item dropdown">
                         <a class="nav-link" href="{{ route('history-laptop.index') }}">
-                            <i class="fe-book"></i> History Laptop
+                            <i class="fe-book"></i> History
                         </a>
                     </li>
 

@@ -42,8 +42,6 @@ class HistoryLaptopImport implements ToCollection, WithHeadingRow, WithMultipleS
         $i = 0;
         $imageI = 0;
         foreach ($collection as $row) {
-            //skip data, jika semua row bernilai null
-
             $validateQuery = $this->validateQuery($row);
 
             $dirImage = $row['ba'];
@@ -58,7 +56,6 @@ class HistoryLaptopImport implements ToCollection, WithHeadingRow, WithMultipleS
             }
             if (count($validateQuery[0]) == 1 and count($validateQuery[1]) == 1 and count($validateQuery[2]) == 1 and $row['penyerahan'] != null) {
                 if (Str::lower($row['status']) == 'penyerahan') $status = 1;
-
                 HistoryLaptop::create([
                     'ba' => $image,
                     'unit' => $validateQuery[2][0]['nama_unit'],
@@ -90,15 +87,15 @@ class HistoryLaptopImport implements ToCollection, WithHeadingRow, WithMultipleS
     {
         $i = 0;
         foreach ($collection as $row) {
-            //skip data, jika semua row bernilai null
-
             $validateQuery = $this->validateQuery($row);
 
             if (count($validateQuery[0]) == 1 and count($validateQuery[1]) == 1 and count($validateQuery[2]) == 1 and $row['rotasi'] != null) {
                 if (Str::lower($row['status']) == 'rotasi') $status = 2;
+                $historyLaptop = HistoryLaptop::select('penyerahan')->where('laptop_id', $validateQuery[0][0]['id'])->whereNull('rotasi')->get();
                 HistoryLaptop::create([
                     'unit' => $validateQuery[2][0]['nama_unit'],
                     'rotasi' => date("Y-m-d", ($row['rotasi'] - 25569) * 86400),
+                    'penyerahan' => $historyLaptop[0]['penyerahan'],
                     'status' => $status,
                     'laptop_id' => $validateQuery[0][0]['id'],
                     'pegawai_id' => $validateQuery[1][0]['id'],
@@ -127,10 +124,6 @@ class HistoryLaptopImport implements ToCollection, WithHeadingRow, WithMultipleS
         $i = 0;
         $imageI = 0;
         foreach ($collection as $row) {
-            //skip data, jika semua row bernilai null
-            // if(!array_filter($row)) {
-            //     return null;
-            //  }
             $validateQuery = $this->validateQuery($row);
 
             $dirImage = $row['ba'];
@@ -146,19 +139,12 @@ class HistoryLaptopImport implements ToCollection, WithHeadingRow, WithMultipleS
 
             if (count($validateQuery[0]) == 1 and count($validateQuery[1]) == 1 and count($validateQuery[2]) == 1 and $row['kembali'] != null) {
                 if (Str::lower($row['status']) == 'kembali') $status = 3;
-                $historyLaptop = HistoryLaptop::select('penyerahan', 'rotasi')->where('laptop_id', $validateQuery[0][0]['id'])->where('pegawai_id', $validateQuery[1][0]['id'])->whereNull('kembali')->get();
-
-                if (count($historyLaptop) == 2) {
-                    $rotasi = $historyLaptop[1]['rotasi'];
-                } else {
-                    $rotasi = null;
-                }
-
+                $historyLaptop = HistoryLaptop::select('penyerahan', 'rotasi')->where('sn', $validateQuery[0][0]['sn'])->whereNull('kembali')->get();
                 HistoryLaptop::create([
                     'ba' => $image,
                     'unit' => $validateQuery[2][0]['nama_unit'],
                     'penyerahan' => $historyLaptop[0]['penyerahan'],
-                    'rotasi' => $rotasi,
+                    'rotasi' => $historyLaptop[0]['rotasi'],
                     'kembali' => date("Y-m-d", ($row['kembali'] - 25569) * 86400),
                     'status' => $status,
                     'laptop_id' => $validateQuery[0][0]['id'],
@@ -200,10 +186,6 @@ class HistoryLaptopImport implements ToCollection, WithHeadingRow, WithMultipleS
 
         $local = public_path('assets/images/temp');
         $toDir = public_path('assets/images/ba');
-
-        if(is_dir($local) != true && is_dir($toDir) != true){
-            return view('dashboard.history_laptop.index')->with('error', 'Folder Temp dan BA tidak ditemukan');
-        }
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $path);

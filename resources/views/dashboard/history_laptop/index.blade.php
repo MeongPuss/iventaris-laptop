@@ -90,7 +90,7 @@
                                         <td>
                                             @if ($history->kembali == null && $history->rotasi == null)
                                                 <span class="badge badge-success">Penyerahan</span>
-                                            @elseif($history->rotasi != null && $history->kembali == null)
+                                            @elseif($history->rotasi != null)
                                                 <span class="badge badge-warning">Rotasi</span>
                                             @else
                                                 <span class="badge badge-danger">Pengembalian</span>

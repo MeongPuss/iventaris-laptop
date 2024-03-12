@@ -48,91 +48,59 @@
             @foreach ($detail as $item)
                 <div class="col-lg-4">
                     <div class="text-center card-box">
-                        <h4>
-                            <p class="text-dark">
-                                @foreach ($item->pegawais as $pegawai)
-                                    {{ $pegawai->nama_pegawai }} | {{ $pegawai->nip }}
+                        <div class="pt-2 pb-2">
+                            {{-- <img src="../assets/images/users/user-3.jpg" class="rounded-circle img-thumbnail avatar-xl" alt="profile-image"> --}}
+
+                            <h4 class="mt-3">
+                                <p class="text-dark">
+                                    @foreach ($item->pegawais as $pegawai)
+                                        {{ $pegawai->nama_pegawai }} | {{ $pegawai->nip }}
+                                    @endforeach
+                                </p>
+                            </h4>
+                            <p class="text-muted">
+                                @foreach ($item->laptops as $laptop)
+                                    {{ $laptop->sn }} | {{ $laptop->merek }}
                                 @endforeach
                             </p>
-                        </h4>
-                        <p class="text-muted">
-                            @foreach ($item->laptops as $laptop)
-                                {{ $laptop->sn }} | {{ $laptop->merek }}
-                            @endforeach
-                        </p>
-                        @if ($item->kembali == null && $item->rotasi == null)
-                            <button type="button" class="btn btn-primary btn-sm waves-effect" data-toggle="modal"
-                                data-target="#centermodal">Berita Acara</button>
 
-                            <!-- Center modal content -->
-                            <div class="modal fade" id="centermodal" tabindex="-1" role="dialog" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                aria-hidden="true">×</button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <img src="{{ url('/assets/images/ba/' . $item->ba) }}" alt=""
-                                                style="width: 85%; height: auto;">
-                                        </div>
-                                    </div><!-- /.modal-content -->
-                                </div><!-- /.modal-dialog -->
-                            </div><!-- /.modal -->
-                        @elseif($item->rotasi != null && $item->kembali == null)
-                            -
-                        @else
-                            <button type="button" class="btn btn-primary btn-sm waves-effect" data-toggle="modal"
-                                data-target="#centermodal">Berita Acara</button>
+                            <div class="row mt-4">
+                                <div class="col-4">
+                                    <div class="mt-3">
+                                        <p class="mb-0 text-muted text-truncate">
+                                            @if ($item->kembali == null && $item->rotasi == null)
+                                                Penyerahan
+                                            @elseif($item->rotasi != null)
+                                                Rotasi
+                                            @else
+                                                Pengembalian
+                                            @endif
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="mt-3">
+                                        <p class="mb-0 text-muted text-truncate">
+                                            {{ $item->unit }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="mt-3">
+                                        <p class="mb-0 text-muted text-truncate">
+                                            @if ($item->kembali == null && $item->rotasi == null)
+                                                {{ $item->penyerahan }}
+                                            @elseif($item->rotasi != null)
+                                                {{ $item->rotasi }}
+                                            @else
+                                                {{ $item->kembali }}
+                                            @endif
+                                        </p>
+                                    </div>
+                                </div>
+                            </div> <!-- end row-->
 
-                            <!-- Center modal content -->
-                            <div class="modal fade" id="centermodal" tabindex="-1" role="dialog" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                aria-hidden="true">×</button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <img src="{{ url('/assets/images/ba/' . $item->ba) }}" alt=""
-                                                style="width: 85%; height: auto;">
-                                        </div>
-                                    </div><!-- /.modal-content -->
-                                </div><!-- /.modal-dialog -->
-                            </div><!-- /.modal -->
-                        @endif
-
-
-                        <div class="row mt-4">
-                            <div class="col-4">
-                                <p class="mb-0 text-muted text-truncate">
-                                    @if ($item->kembali == null && $item->rotasi == null)
-                                        Penyerahan
-                                    @elseif($item->rotasi != null && $item->kembali == null)
-                                        Rotasi
-                                    @else
-                                        Pengembalian
-                                    @endif
-                                </p>
-                            </div>
-                            <div class="col-4">
-                                <p class="mb-0 text-muted text-truncate">
-                                    {{ $item->unit }}
-                                </p>
-                            </div>
-                            <div class="col-4">
-                                <p class="mb-0 text-muted text-truncate">
-                                    @if ($item->kembali == null && $item->rotasi == null)
-                                        {{ $item->penyerahan }}
-                                    @elseif($item->rotasi != null)
-                                        {{ $item->rotasi }}
-                                    @else
-                                        {{ $item->kembali }}
-                                    @endif
-                                </p>
-                            </div>
-                        </div> <!-- end row-->
-
+                        </div> <!-- end .padding -->
                     </div> <!-- end card-box-->
                 </div> <!-- end col -->
             @endforeach
