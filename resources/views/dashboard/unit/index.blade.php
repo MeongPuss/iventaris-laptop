@@ -132,7 +132,7 @@
         $(document).ready(function() {
             $('#datatable-buttons').DataTable({
                 lengthChange: false,
-                searching: false,
+                searching: true,
                 ordering: false
             });
         });
