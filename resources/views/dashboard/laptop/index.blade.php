@@ -2,8 +2,8 @@
 @section('title', 'Laptop')
 
 @section('content')
-     <!-- Start Content-->
-     <div class="container-fluid">
+    <!-- Start Content-->
+    <div class="container-fluid">
 
         <!-- start page title -->
         <div class="row">
@@ -19,6 +19,22 @@
             </div>
         </div>
         <!-- end page title -->
+        @if ($message = Session::get('success'))
+            <div class="alert alert-success alert-block">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>{{ $message }}</strong>
+            </div>
+        @elseif (($message = Session::get('error')) and ($fail = Session::get('faileds')))
+            <div class="alert alert-danger alert-block">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>{{ $message }}</strong>
+                <ol>
+                    @foreach ($fail as $item)
+                        <li>{{ $item }}</li>
+                    @endforeach
+                </ol>
+            </div>
+        @endif
 
         <div class="row">
             <div class="col-12">
@@ -26,20 +42,23 @@
                     <div class="card-body">
 
                         <div class="header-title">
-                            <a href="{{ route('laptops.create') }}" class="btn btn-rounded btn-primary waves-effect waves-light">
+                            <a href="{{ route('laptops.create') }}"
+                                class="btn btn-rounded btn-primary waves-effect waves-light">
                                 <span class="btn-label">
                                     <i class="fas fa-plus-circle"></i>
                                 </span>
                                 Tambah
                             </a>
 
-                            <button type="button" class="btn btn-rounded btn-info waves-effect waves-light" data-toggle="modal" data-target="#import-laptop">
+                            <button type="button" class="btn btn-rounded btn-info waves-effect waves-light"
+                                data-toggle="modal" data-target="#import-laptop">
                                 <span class="btn-label">
                                     <i class="fe-upload-cloud"></i>
                                 </span>
                                 Import
                             </button>
-                            <div id="import-laptop" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="importModal" aria-hidden="true" style="display: none;">
+                            <div id="import-laptop" class="modal fade" tabindex="-1" role="dialog"
+                                aria-labelledby="importModal" aria-hidden="true" style="display: none;">
                                 @include('dashboard.laptop.import')
                             </div><!-- /.modal -->
                         </div>
@@ -62,7 +81,8 @@
                                         <td> {{ $loop->iteration }} </td>
                                         <td> {{ $laptops->sn }} </td>
                                         <td> {{ $laptops->merek }} || {{ $laptops->tipe }}</td>
-                                        <td> {{ $laptops->processor }} || {{ $laptops->ram }}GB || {{ $laptops->penyimpanan }} </td>
+                                        <td> {{ $laptops->processor }} || {{ $laptops->ram }}GB ||
+                                            {{ $laptops->penyimpanan }} </td>
                                         <td> {{ $laptops->garansi }} </td>
                                         <td> {{ $laptops->remote }} </td>
                                         <td>
@@ -75,14 +95,21 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="#" class="btn btn-info btn-rounded waves-effect waves-light btn-sm">
-                                                <span class="btn-label"><i class="mdi mdi-alert-circle-outline"></i></span>Detail
+                                            <a href="#"
+                                                class="btn btn-info btn-rounded waves-effect waves-light btn-sm">
+                                                <span class="btn-label"><i
+                                                        class="mdi mdi-alert-circle-outline"></i></span>Detail
                                             </a>
-                                            <a href="{{ route('laptops.edit', ['id' => $laptops->id]) }}" class="btn btn-warning btn-rounded waves-effect waves-light btn-sm">
+                                            <a href="{{ route('laptops.edit', ['id' => $laptops->id]) }}"
+                                                class="btn btn-warning btn-rounded waves-effect waves-light btn-sm">
                                                 <span class="btn-label"><i class="mdi mdi-alert"></i></span>Ubah
                                             </a>
-                                            <a href="{{ route('laptops.destroy', ['id' => $laptops->id]) }}" class="btn btn-rounded btn-danger waves-effect waves-light btn-sm" data-confirm-delete="true" style="pointer-events: none; display: inline-block;" id="hapus">
-                                                <span class="btn-label"><i class="mdi mdi-close-circle-outline"></i></span>Hapus
+                                            <a href="{{ route('laptops.destroy', ['id' => $laptops->id]) }}"
+                                                class="btn btn-rounded btn-danger waves-effect waves-light btn-sm"
+                                                data-confirm-delete="true"
+                                                style="pointer-events: none; display: inline-block;" id="hapus">
+                                                <span class="btn-label"><i
+                                                        class="mdi mdi-close-circle-outline"></i></span>Hapus
                                             </a>
                                         </td>
                                     </tr>
@@ -113,20 +140,20 @@
     <script src="{{ asset('assets/js/form-fileuploads.init.js') }}"></script>
 
     <script>
-        $(document).ready( function () {
+        $(document).ready(function() {
             $('#datatable-buttons').DataTable({
                 lengthChange: false,
                 searching: true,
-                ordering:  false
+                ordering: false
             });
-        } );
+        });
     </script>
     <script>
         window.setTimeout(enableDelete, 5000)
 
         function enableDelete() {
             const data = {{ Js::from($laptop) }};
-            data.forEach(function (value, index) {
+            data.forEach(function(value, index) {
                 const list = document.querySelectorAll("#hapus");
                 list[index].removeAttribute("style");
             })

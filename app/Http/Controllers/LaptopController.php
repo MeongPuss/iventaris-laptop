@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LaptopRequest;
 use App\Imports\LaptopImport;
 use App\Models\Laptop;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class LaptopController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(LaptopRequest $request)
     {
         $penyimpanan = $request->penyimpanan." ".$request->kapasitas;
 
@@ -44,7 +45,7 @@ class LaptopController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect()->route('laptops.index');
+        return redirect()->route('laptops.index')->with('success', 'Data Berhasil Ditambahkan');
     }
 
     public function show(Laptop $laptop)
@@ -63,7 +64,7 @@ class LaptopController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(LaptopRequest $request, string $id)
     {
         $penyimpanan = $request->penyimpanan." ".$request->kapasitas;
 
@@ -79,14 +80,13 @@ class LaptopController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect()->route('laptops.index');
+        return redirect()->route('laptops.index')->with('success', 'Data Berhasil Diubah');
     }
 
     public function destroy(string $id)
     {
         Laptop::destroy($id);
-        toast('Data Berhasil Dihapus','success');
-        return redirect()->route('laptops.index');
+        return redirect()->route('laptops.index')->with('success', 'Data Berhasil Dihapus');
     }
 
     public function importStore(Request $request)

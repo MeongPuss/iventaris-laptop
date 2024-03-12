@@ -2,8 +2,8 @@
 @section('title', 'Tambah Laptop')
 
 @section('content')
-     <!-- Start Content-->
-     <div class="container-fluid">
+    <!-- Start Content-->
+    <div class="container-fluid">
 
         <!-- start page title -->
         <div class="row">
@@ -20,6 +20,15 @@
             </div>
         </div>
         <!-- end page title -->
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <div class="row">
             <div class="col-lg-12">
@@ -29,12 +38,12 @@
                             @csrf
                             <div class="form-group">
                                 <label for="sn">SN Laptop<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="sn"
-                                    name="sn" placeholder="Input SN Laptop">
+                                <input type="text" class="form-control" id="sn" name="sn"
+                                    placeholder="Input SN Laptop">
                             </div>
                             <div class="form-group">
                                 <label for="merek">Merek Laptop<span class="text-danger">*</span></label>
-                                <select name="merek" class="form-control" >
+                                <select name="merek" class="form-control">
                                     <option value="hp">HP</option>
                                     <option value="lenovo">Lenovo</option>
                                     <option value="acer">Acer</option>
@@ -44,25 +53,25 @@
                             </div>
                             <div class="form-group">
                                 <label for="tipe">Tipe Laptop<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="tipe"
-                                    name="tipe" placeholder="Input Tipe Laptop">
+                                <input type="text" class="form-control" id="tipe" name="tipe"
+                                    placeholder="Input Tipe Laptop">
                             </div>
                             <div class="form-group">
                                 <label for="processor">Processor<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="processor"
-                                    name="processor" placeholder="Input Processor Laptop">
+                                <input type="text" class="form-control" id="processor" name="processor"
+                                    placeholder="Input Processor Laptop">
                             </div>
                             <div class="form-group">
                                 <label for="ram">RAM<span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" id="ram"
-                                    name="ram" placeholder="Input RAM Laptop">
+                                <input type="number" class="form-control" id="ram" name="ram"
+                                    placeholder="Input RAM Laptop">
                             </div>
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label for="penyimpanan">Penyimpanan<span class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" id="penyimpanan"
-                                            name="penyimpanan" placeholder="Input Penyimpanan Laptop">
+                                        <input type="number" class="form-control" id="penyimpanan" name="penyimpanan"
+                                            placeholder="Input Penyimpanan Laptop">
                                     </div>
                                 </div>
                                 <div class="col-lg-2">
@@ -79,15 +88,15 @@
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label for="garansi">Garansi<span class="text-danger">*</span></label>
-                                        <input type="date" class="form-control" id="garansi"
-                                            name="garansi" placeholder="Input SN Laptop">
+                                        <input type="date" class="form-control" id="garansi" name="garansi"
+                                            placeholder="Input SN Laptop">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="remote">Remote<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="remote"
-                                    name="remote" placeholder="Input Remote Laptop">
+                                <input type="text" class="form-control" id="remote" name="remote"
+                                    placeholder="Input Remote Laptop">
                             </div>
                             <div class="form-group">
                                 <label for="status">Status<span class="text-danger">*</span></label>
