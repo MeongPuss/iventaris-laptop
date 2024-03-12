@@ -60,6 +60,6 @@ class UnitController extends Controller
 
         Excel::import(new UnitImport, $file);
 
-        return redirect()->route('unit.index');
+        return redirect()->route('unit.index')->with('success', 'Import data unit berhasil');
     }
 }
