@@ -4,7 +4,7 @@
 @section('content')
      <!-- Start Content-->
      <div class="container-fluid">
-                        
+
         <!-- start page title -->
         <div class="row">
             <div class="col-12">
@@ -18,9 +18,18 @@
                     <h4 class="page-title">Tambah Pegawai</h4>
                 </div>
             </div>
-        </div>     
-        <!-- end page title --> 
-        
+        </div>
+        <!-- end page title -->
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -29,14 +38,14 @@
                             @csrf
                             <div class="form-group">
                                 <label for="nip">NIP<span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" id="nip"
+                                <input type="text" class="form-control" id="nip"
                                     name="nip" placeholder="Input NIP Pegawai">
                             </div>
                             <div class="form-group">
                                 <label for="nama_pegawai">Nama<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="nama_pegawai" name="nama_pegawai"
                                     placeholder="Input Nama Pegawai">
-                            </div>                     
+                            </div>
                             <div class="form-group">
                                 <label for="description">Unit<span class="text-danger">*</span></label>
                                 <select class="form-control" id="unit_id" name="unit_id">
@@ -44,14 +53,14 @@
                                         <option value="{{ $units->id }}">{{ $units->nama_unit }}</option>
                                     @endforeach
                                 </select>
-                            </div>  
+                            </div>
                             <div class="form-group">
-                                <label for="nama_pegawai">Status<span class="text-danger">*</span></label>
+                                <label for="status_pegawai">Status<span class="text-danger">*</span></label>
                                 <select class="form-control" id="status_pegawai" name="status_pegawai">
                                     <option value="1">Aktif</option>
                                     <option value="2">Tidak Aktif</option>
                                 </select>
-                            </div>               
+                            </div>
                             <button class="btn btn-success btn-rounded waves-effect waves-light">
                                 <span class="btn-label"><i class="mdi mdi-check-all"></i></span>Simpan
                             </button>

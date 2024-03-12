@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PegawaiRequest;
 use App\Models\Unit;
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
@@ -19,17 +20,17 @@ class PegawaiController extends Controller
         $text = "Apakah Anda yakin ingin menghapus?";
         confirmDelete($title, $text);
 
-        return view('dashboard/pegawai/index', compact('pegawai'));
+        return view('dashboard.pegawai.index', compact('pegawai'));
     }
 
     public function create()
     {
         $unit = Unit::all();
 
-        return view('dashboard/pegawai/create', compact('unit'));
+        return view('dashboard.pegawai.create', compact('unit'));
     }
 
-    public function store(Request $request)
+    public function store(PegawaiRequest $request)
     {
         Pegawai::create([
             'nip' => $request->nip,
@@ -38,7 +39,7 @@ class PegawaiController extends Controller
             'unit_id' => $request->unit_id,
         ]);
 
-        return redirect()->route('pegawai.index');
+        return redirect()->route('pegawai.index')->with('success', 'Data Berhasil Ditambahkan');
     }
 
     public function show(Pegawai $pegawai)
@@ -51,10 +52,10 @@ class PegawaiController extends Controller
         $pegawai = Pegawai::findOrFail($id);
         $unit = Unit::all();
 
-        return view('dashboard/pegawai/update', compact('pegawai', 'unit'));
+        return view('dashboard.pegawai.update', compact('pegawai', 'unit'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(PegawaiRequest $request, string $id)
     {
         $pegawai = Pegawai::findOrFail($id);
         $pegawai->update([
@@ -64,14 +65,13 @@ class PegawaiController extends Controller
             'unit_id' => $request->unit_id,
         ]);
 
-        return redirect()->route('pegawai.index');
+        return redirect()->route('pegawai.index')->with('success', 'Data Berhasil Diubah');
     }
 
     public function destroy(string $id)
     {
         Pegawai::destroy($id);
-        toast('Data Berhasil Dihapus','success');
-        return redirect()->route('pegawai.index');
+        return redirect()->route('pegawai.index')->with('success', 'Data Berhasil Dihapus');
     }
 
     public function importStore(Request $request)

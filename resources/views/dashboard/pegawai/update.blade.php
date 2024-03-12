@@ -4,7 +4,7 @@
 @section('content')
      <!-- Start Content-->
      <div class="container-fluid">
-                        
+
         <!-- start page title -->
         <div class="row">
             <div class="col-12">
@@ -18,9 +18,9 @@
                     <h4 class="page-title">Ubah Pegawai</h4>
                 </div>
             </div>
-        </div>     
-        <!-- end page title --> 
-        
+        </div>
+        <!-- end page title -->
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -30,14 +30,14 @@
                             @method('PUT')
                             <div class="form-group">
                                 <label for="nip">NIP<span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" id="nip"
+                                <input type="text" class="form-control" id="nip"
                                     name="nip" placeholder="Input NIP Pegawai" value="{{ $pegawai->nip }}">
                             </div>
                             <div class="form-group">
                                 <label for="nama_pegawai">Nama<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="nama_pegawai" name="nama_pegawai"
                                     placeholder="Input Nama Pegawai" value="{{ $pegawai->nama_pegawai }}">
-                            </div>                     
+                            </div>
                             <div class="form-group">
                                 <label for="description">Unit<span class="text-danger">*</span></label>
                                 <select class="form-control" id="unit_id" name="unit_id">
@@ -45,14 +45,14 @@
                                         <option value="{{ $units->id }}" {{ ($pegawai->unit_id == $units->id) ? 'selected' : '' }}>{{ $units->nama_unit }}</option>
                                     @endforeach
                                 </select>
-                            </div>  
+                            </div>
                             <div class="form-group">
                                 <label for="nama_pegawai">Nama<span class="text-danger">*</span></label>
                                 <select class="form-control" id="status_pegawai" name="status_pegawai">
                                     <option value="1" {{ ($pegawai->status_pegawai == 1) ? 'selected' : '' }}>Aktif</option>
                                     <option value="2" {{ ($pegawai->status_pegawai == 2) ? 'selected' : '' }}>Tidak Aktif</option>
                                 </select>
-                            </div>               
+                            </div>
                             <button class="btn btn-success btn-rounded waves-effect waves-light">
                                 <span class="btn-label"><i class="mdi mdi-check-all"></i></span>Simpan
                             </button>
