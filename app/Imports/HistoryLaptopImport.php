@@ -26,7 +26,7 @@ class HistoryLaptopImport implements ToCollection, WithHeadingRow, WithMultipleS
     public function collection(Collection $collection)
     {
         $historyLaptop = request()->input('save');
-        if($historyLaptop == 'penyerahan') {
+        if ($historyLaptop == 'penyerahan') {
             $this->penyerahan($collection);
         } elseif ($historyLaptop == 'rotasi') {
             $this->rotasi($collection);
@@ -47,15 +47,23 @@ class HistoryLaptopImport implements ToCollection, WithHeadingRow, WithMultipleS
             $dirImage = $row['ba'];
             $extension = explode('.', $dirImage);
 
-            $image = $this->image($dirImage, $validateQuery[0][0]['sn'], $validateQuery[1][0]['nip'], ++$imageI, "peyerahan");
-            if (Str::lower($extension[1]) == 'jpg' or Str::lower($extension[1]) == 'jpeg' or Str::lower($extension[1]) == 'png') {
-                $image;
-            } else {
-                $i++;
-                break;
-            }
             if (count($validateQuery[0]) == 1 and count($validateQuery[1]) == 1 and count($validateQuery[2]) == 1 and $row['penyerahan'] != null) {
-                if (Str::lower($row['status']) == 'penyerahan') $status = 1;
+                //cek status pada data excel
+                if (Str::lower($row['status']) == 'penyerahan') {
+                    $status = 1;
+                } else {
+                    $i++;
+                    break;
+                }
+
+                $image = $this->image($dirImage, $validateQuery[0][0]['sn'], $validateQuery[1][0]['nip'], ++$imageI, "peyerahan");
+                if (Str::lower($extension[1]) == 'jpg' or Str::lower($extension[1]) == 'jpeg' or Str::lower($extension[1]) == 'png') {
+                    $image;
+                } else {
+                    $i++;
+                    break;
+                }
+
                 HistoryLaptop::create([
                     'ba' => $image,
                     'unit' => $validateQuery[2][0]['nama_unit'],
@@ -90,12 +98,19 @@ class HistoryLaptopImport implements ToCollection, WithHeadingRow, WithMultipleS
             $validateQuery = $this->validateQuery($row);
 
             if (count($validateQuery[0]) == 1 and count($validateQuery[1]) == 1 and count($validateQuery[2]) == 1 and $row['rotasi'] != null) {
-                if (Str::lower($row['status']) == 'rotasi') $status = 2;
-                $historyLaptop = HistoryLaptop::select('penyerahan')->where('laptop_id', $validateQuery[0][0]['id'])->whereNull('rotasi')->get();
+                //cek status pada data excel
+                if (Str::lower($row['status']) == 'rotasi') {
+                    $status = 2;
+                } else {
+                    $i++;
+                    break;
+                }
+                //mencari data value dengan kriteria dimana pegawai_id, laptop_id sama, dan status null dengan data paling terakhir
+                $historyLaptop = HistoryLaptop::select('penyerahan')->where('laptop_id', $validateQuery[0][0]['id'])->where('pegawai_id', $validateQuery[1][0]['id'])->whereNull('rotasi')->get()->last();
                 HistoryLaptop::create([
                     'unit' => $validateQuery[2][0]['nama_unit'],
                     'rotasi' => date("Y-m-d", ($row['rotasi'] - 25569) * 86400),
-                    'penyerahan' => $historyLaptop[0]['penyerahan'],
+                    'penyerahan' => $historyLaptop['penyerahan'],
                     'status' => $status,
                     'laptop_id' => $validateQuery[0][0]['id'],
                     'pegawai_id' => $validateQuery[1][0]['id'],
@@ -129,22 +144,36 @@ class HistoryLaptopImport implements ToCollection, WithHeadingRow, WithMultipleS
             $dirImage = $row['ba'];
             $extension = explode('.', $dirImage);
 
-            $image = $this->image($dirImage, $validateQuery[0][0]['sn'], $validateQuery[1][0]['nip'], ++$imageI, "kembali");
-            if (Str::lower($extension[1]) == 'jpg' or Str::lower($extension[1]) == 'jpeg' or Str::lower($extension[1]) == 'png') {
-                $image;
-            } else {
-                $i++;
-                break;
-            }
-
             if (count($validateQuery[0]) == 1 and count($validateQuery[1]) == 1 and count($validateQuery[2]) == 1 and $row['kembali'] != null) {
-                if (Str::lower($row['status']) == 'kembali') $status = 3;
-                $historyLaptop = HistoryLaptop::select('penyerahan', 'rotasi')->where('sn', $validateQuery[0][0]['sn'])->whereNull('kembali')->get();
+                //cek status pada data excel
+                if (Str::lower($row['status']) == 'kembali') {
+                    $status = 3;
+                } else {
+                    $i++;
+                    break;
+                }
+                //mencari data value dengan kriteria dimana pegawai_id, laptop_id sama, dan status null dengan data paling terakhir
+                $historyLaptop = HistoryLaptop::select('penyerahan', 'rotasi')->where('pegawai_id', $validateQuery[1][0]['id'])->where('laptop_id', $validateQuery[0][0]['id'])->whereNull('kembali')->get()->last();
+
+                if ($historyLaptop['rotasi'] != null) {
+                    $rotasi = $historyLaptop['rotasi'];
+                } else {
+                    $rotasi = null;
+                }
+
+                $image = $this->image($dirImage, $validateQuery[0][0]['sn'], $validateQuery[1][0]['nip'], ++$imageI, "kembali");
+                if (Str::lower($extension[1]) == 'jpg' or Str::lower($extension[1]) == 'jpeg' or Str::lower($extension[1]) == 'png') {
+                    $image;
+                } else {
+                    $i++;
+                    break;
+                }
+
                 HistoryLaptop::create([
                     'ba' => $image,
                     'unit' => $validateQuery[2][0]['nama_unit'],
-                    'penyerahan' => $historyLaptop[0]['penyerahan'],
-                    'rotasi' => $historyLaptop[0]['rotasi'],
+                    'penyerahan' => $historyLaptop['penyerahan'],
+                    'rotasi' => $rotasi,
                     'kembali' => date("Y-m-d", ($row['kembali'] - 25569) * 86400),
                     'status' => $status,
                     'laptop_id' => $validateQuery[0][0]['id'],
@@ -187,6 +216,17 @@ class HistoryLaptopImport implements ToCollection, WithHeadingRow, WithMultipleS
         $local = public_path('assets/images/temp');
         $toDir = public_path('assets/images/ba');
 
+        //validasi folder BA dan membuat folder BA
+        if (is_dir($toDir) != true) mkdir($toDir, 0777, true);
+        //validasi folder temo
+        if (is_dir($local) != true) {
+            //membuat folder Temp
+            mkdir($local, 0777, true);
+            //membuat file temp.png
+            fopen($img, 'w');
+        }
+
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $path);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -199,7 +239,7 @@ class HistoryLaptopImport implements ToCollection, WithHeadingRow, WithMultipleS
         //ambil extension file image
         $extension = explode('.', $files[0]);
         //lakukan proses copy image
-        $nameImage = $status . "-" .$nip . "-" . $sn . "-" . Str::random(10) . time() . $i . "." . $extension[1];
+        $nameImage = $status . "-" . $nip . "-" . $sn . "-" . Str::random(10) . time() . $i . "." . $extension[1];
         copy("$local/$files[0]", "$toDir/$nameImage");
 
         return $nameImage;

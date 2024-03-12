@@ -70,7 +70,7 @@
                                         <p class="mb-0 text-muted text-truncate">
                                             @if ($item->kembali == null && $item->rotasi == null)
                                                 Penyerahan
-                                            @elseif($item->rotasi != null)
+                                            @elseif($item->rotasi != null && $item->kembali == null)
                                                 Rotasi
                                             @else
                                                 Pengembalian
@@ -90,7 +90,7 @@
                                         <p class="mb-0 text-muted text-truncate">
                                             @if ($item->kembali == null && $item->rotasi == null)
                                                 {{ $item->penyerahan }}
-                                            @elseif($item->rotasi != null)
+                                            @elseif($item->rotasi != null && $item->kembali == null)
                                                 {{ $item->rotasi }}
                                             @else
                                                 {{ $item->kembali }}
@@ -106,7 +106,7 @@
             @endforeach
         </div> <!-- end col -->
 
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-12">
                 <div class="text-right">
                     <ul class="pagination pagination-rounded justify-content-end">
@@ -130,7 +130,7 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <!-- end row -->
 
     </div> <!-- container -->

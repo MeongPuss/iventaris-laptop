@@ -69,7 +69,7 @@ class HistoryLaptopController extends Controller
     {
         $laptop = Laptop::findOrFail($id);
         $type = 'laptop';
-        $detail = HistoryLaptop::with(['laptops', 'pegawais'])->where('laptop_id', $id)->get();
+        $detail = HistoryLaptop::with(['laptops', 'pegawais'])->where('laptop_id', $id)->orderByDesc('created_at')->get();
 
         return view('dashboard.history_laptop.detail', compact('detail', 'type', 'laptop'));
     }
