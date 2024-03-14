@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\HistoryLaptopImport;
+use App\Models\Unit;
 use App\Models\Laptop;
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
 use App\Models\HistoryLaptop;
-use Illuminate\Support\Facades\Session;
+use App\Imports\HistoryLaptopImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Session;
 
 class HistoryLaptopController extends Controller
 {
@@ -22,10 +23,11 @@ class HistoryLaptopController extends Controller
 
     public function create()
     {
-        $laptop = Laptop::all();
-        $pegawai = Pegawai::all();
+        $laptop = Laptop::all('id', 'sn');
+        $pegawai = Pegawai::select('id', 'nama_pegawai')->get();
+        $unit = Unit::select('nama_unit')->get();
 
-        return view('dashboard.history_laptop.create', compact('laptop', 'pegawai'));
+        return view('dashboard.history_laptop.create', compact('laptop', 'pegawai', 'unit'));
     }
 
     public function store(Request $request)
@@ -40,14 +42,15 @@ class HistoryLaptopController extends Controller
         $pegawai = Pegawai::findOrFail($request->pegawai_id);
         $unit = $pegawai->unit->nama_unit;
 
+
+
         HistoryLaptop::create([
             'unit' => $unit,
             'laptop_id' => $request->laptop_id,
             'pegawai_id' => $request->pegawai_id,
             'penyerahan' => $request->penyerahan,
-            'kembali' => null,
             'ba' => $imageName,
-            'status' => $request->status,
+            'status' => 1,
         ]);
 
         return redirect()->route('history-laptop.index');

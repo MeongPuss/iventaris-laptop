@@ -20,6 +20,15 @@
             </div>
         </div>
         <!-- end page title -->
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <form method="POST" action="{{ route('it.update', ['id' => $itSupport->id]) }}">
             @csrf
@@ -60,9 +69,11 @@
                                 <label>Unit<span class="text-danger">*</span></label>
                                 @foreach ($units as $unit)
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="unit_id_{{ $unit->id }}" name="unit_id[]"
-                                            value="{{ $unit->id }}" {{ in_array($unit->id, $itUnit) ? 'checked' : '' }}>
-                                        <label class="custom-control-label" for="unit_id_{{ $unit->id }}">{{ $unit->nama_unit }}</label>
+                                        <input type="checkbox" class="custom-control-input" id="unit_id_{{ $unit->id }}"
+                                            name="unit_id[]" value="{{ $unit->id }}"
+                                            {{ in_array($unit->id, $itUnit) ? 'checked' : '' }}>
+                                        <label class="custom-control-label"
+                                            for="unit_id_{{ $unit->id }}">{{ $unit->nama_unit }}</label>
                                     </div>
                                 @endforeach
                             </div>

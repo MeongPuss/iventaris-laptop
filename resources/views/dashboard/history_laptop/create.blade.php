@@ -50,15 +50,27 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label for="status">Status<span class="text-danger">*</span></label>
-                                        <select class="form-control" name="status">
-                                            <option value="1">Aktif</option>
-                                            <option value="2">Tidak Aktif</option>
+                                        <label for="unit">Unit<span class="text-danger">*</span></label>
+                                        <select class="form-control" id="unit" name="unit">
+                                            @foreach ($unit as $units)
+                                                <option value="{{ $units->nama_unit }}">{{ $units->nama_unit }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="status-laptop">Status<span class="text-danger">*</span></label>
+                                        <select class="form-control" name="status" id="status-laptop" onclick="myFunction()">
+                                            <option value="">Select Status</option>
+                                            <option value="penyerahan">Penyerahan</option>
+                                            <option value="rotasi">Rotasi</option>
+                                            <option value="pengembalian">Pengembalian</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="penyerahan">Tanggal Penyerahan<span class="text-danger">*</span></label>
@@ -100,4 +112,11 @@
     <script src="{{ asset('assets/js/dropify.min.js') }}"></script>
     <script src="{{ asset('assets/js/dropzone.min.js') }}"></script>
     <script src="{{ asset('assets/js/form-fileuploads.init.js') }}"></script>
+    <script>
+        function myFunction() {
+          status = document.getElementById("status-laptop");
+            output = selectElementValue();
+            console.log(output);
+        }
+        </script>
 @endsection

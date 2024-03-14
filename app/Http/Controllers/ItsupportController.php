@@ -6,6 +6,7 @@ use App\Models\Unit;
 use App\Models\Itsupport;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Requests\ITSRequest;
 
 class ItsupportController extends Controller
 {
@@ -26,19 +27,21 @@ class ItsupportController extends Controller
         return view('dashboard.it.create', compact('units'));
     }
 
-    public function store(Request $request)
+    public function store(ITSRequest $request)
     {
+        $password = "p@ssw0rd123";
+
         $itSupport = Itsupport::create([
-            'nip' => $request->nip,
-            'nama_it' => $request->nama_it,
+            'nip' => Str::upper($request->nip),
+            'nama_it' => Str::upper($request->nama_it),
             'username' => Str::lower($request->username),
-            'password' => $request->password,
+            'password' => $password,
             'role' => 2,
         ]);
 
         $itSupport->units()->attach($request->unit_id);
 
-        return redirect()->route('it.index')->with('success', 'IT Support berhasil ditambah');
+        return redirect()->route('it.index')->with('success', 'Data Berhasil Ditambahkan');
     }
 
     public function show(string $id)
@@ -49,24 +52,24 @@ class ItsupportController extends Controller
 
     public function edit(string $id)
     {
-        $itSupport = Itsupport::with('units')->find($id);
+        $itSupport = Itsupport::with('units')->findOrFail($id);
         $units = Unit::all();
         $itUnit = array_column($itSupport->units->toArray(), 'id');
         return view('dashboard.it.update', compact('itSupport', 'units', 'itUnit'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(ITSRequest $request, string $id)
     {
-        $itSupport = Itsupport::find($id);
+        $itSupport = Itsupport::findOrFail($id);
         $itSupport->update([
-            'nip' => $request->nip,
-            'nama_it' => $request->nama_it,
+            'nip' => Str::upper($request->nip),
+            'nama_it' => Str::upper($request->nama_it),
             'username' => Str::lower($request->username),
         ]);
 
         $itSupport->units()->sync($request->unit_id);
 
-        return redirect()->route('it.index')->with('success', 'IT Support berhasil diubah');
+        return redirect()->route('it.index')->with('success', 'Data Berhasil Diubah');
     }
 
     public function destroy(string $id)
@@ -77,7 +80,7 @@ class ItsupportController extends Controller
 
     public function resetPassword(string $id)
     {
-        $itSupport = Itsupport::find($id);
+        $itSupport = Itsupport::findOrFail($id);
         $newPassword = "p@ssw0rd123";
 
         $itSupport->update([

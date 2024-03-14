@@ -20,6 +20,15 @@
             </div>
         </div>
         <!-- end page title -->
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <form method="POST" action="{{ route('it.store') }}">
             @csrf
@@ -46,11 +55,6 @@
                                         <input type="text" class="form-control" id="username" name="username"
                                             placeholder="Input Username" required>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="password">Password<span class="text-danger">*</span></label>
-                                        <input type="password" class="form-control" id="password" name="password"
-                                            placeholder="Input Password" required>
-                                    </div>
                                 </div>
                                 <button class="btn btn-success btn-rounded waves-effect waves-light mt-2">
                                     <span class="btn-label"><i class="mdi mdi-check-all"></i></span>Simpan
@@ -66,9 +70,10 @@
                                 <label>Unit<span class="text-danger">*</span></label>
                                 @foreach ($units as $unit)
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="unit_id_{{ $unit->id }}" name="unit_id[]"
-                                            value="{{ $unit->id }}">
-                                        <label class="custom-control-label" for="unit_id_{{ $unit->id }}">{{ $unit->nama_unit }}</label>
+                                        <input type="checkbox" class="custom-control-input" id="unit_id_{{ $unit->id }}"
+                                            name="unit_id[]" value="{{ $unit->id }}">
+                                        <label class="custom-control-label"
+                                            for="unit_id_{{ $unit->id }}">{{ $unit->nama_unit }}</label>
                                     </div>
                                 @endforeach
                             </div>

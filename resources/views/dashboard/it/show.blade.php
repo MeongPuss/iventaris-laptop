@@ -49,7 +49,7 @@
                                     @method('PUT')
                                     <button class="btn btn-rounded btn-primary waves-effect waves-light mt-2">
                                         <span class="btn-label"><i class="mdi mdi-onepassword"></i></span>
-                                        Reset
+                                        Reset Password
                                     </button>
                                 </form>
                             </div>
