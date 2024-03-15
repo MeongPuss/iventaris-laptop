@@ -91,7 +91,7 @@ class HistoryLaptopController extends Controller
             'status' => $status
         ]);
 
-        return redirect()->route('history-laptop.index');
+        return redirect()->route('history-laptop.index')->with('success', 'Data Berhasil Ditambahkan');
     }
 
     /**
