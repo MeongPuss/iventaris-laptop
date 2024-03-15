@@ -2,8 +2,8 @@
 @section('title', 'Tambah History Laptop')
 
 @section('content')
-     <!-- Start Content-->
-     <div class="container-fluid">
+    <!-- Start Content-->
+    <div class="container-fluid">
 
         <!-- start page title -->
         <div class="row">
@@ -63,29 +63,36 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="status-laptop">Status<span class="text-danger">*</span></label>
-                                        <select class="form-control" name="status" id="status-laptop" onclick="myFunction()">
-                                            <option value="">Select Status</option>
+                                        <select class="form-control" name="status" id="status-laptop"
+                                            onclick="myFunction()">
+                                            <option value="-">Select Status</option>
                                             <option value="penyerahan">Penyerahan</option>
                                             <option value="rotasi">Rotasi</option>
                                             <option value="pengembalian">Pengembalian</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-6" hidden id="penyerahan-div">
                                     <div class="form-group">
                                         <label for="penyerahan">Tanggal Penyerahan<span class="text-danger">*</span></label>
                                         <input type="date" class="form-control" id="penyerahan" name="penyerahan">
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-6" hidden id="rotasi-div">
                                     <div class="form-group">
-                                        <label for="kembali">Tanggal Kembali</label>
+                                        <label for="rotasi">Tanggal Rotasi<span class="text-danger">*</span></label>
+                                        <input type="date" class="form-control" id="rotasi" name="rotasi">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" hidden id="kembali-div">
+                                    <div class="form-group">
+                                        <label for="kembali">Tanggal Kembali<span class="text-danger">*</span></label>
                                         <input type="date" class="form-control" id="kembali" name="kembali">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input type="file" name="ba" value="" />
+                                <input type="file" data-plugins="dropify" name="ba" />
                             </div>
                             <button class="btn btn-success btn-rounded waves-effect waves-light">
                                 <span class="btn-label"><i class="mdi mdi-check-all"></i></span>Simpan
@@ -114,9 +121,34 @@
     <script src="{{ asset('assets/js/form-fileuploads.init.js') }}"></script>
     <script>
         function myFunction() {
-          status = document.getElementById("status-laptop");
-            output = selectElementValue();
-            console.log(output);
+            let status = document.getElementById("status-laptop").value;
+            let penyerahan = document.getElementById("penyerahan-div");
+            let rotasi = document.getElementById("rotasi-div");
+            let kembali = document.getElementById("kembali-div");
+            if (status === "-" || status === "") {
+                penyerahan.setAttribute("hidden", "true");
+                rotasi.setAttribute("hidden", "true");
+                kembali.setAttribute("hidden", "true");
+            }
+
+            if (status === "penyerahan") {
+                penyerahan.removeAttribute("hidden")
+                rotasi.setAttribute("hidden", "true");
+                kembali.setAttribute("hidden", "true");
+            }
+
+            if (status === "rotasi") {
+                penyerahan.setAttribute("hidden", "true");
+                rotasi.removeAttribute("hidden")
+                kembali.setAttribute("hidden", "true");
+            }
+
+            if (status === "pengembalian") {
+                penyerahan.setAttribute("hidden", "true");
+                rotasi.setAttribute("hidden", "true");
+                kembali.removeAttribute("hidden")
+            }
+            console.log(status);
         }
-        </script>
+    </script>
 @endsection

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\HistoryLaptopRequest;
 use App\Models\Unit;
 use App\Models\Laptop;
 use App\Models\Pegawai;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\HistoryLaptop;
 use App\Imports\HistoryLaptopImport;
@@ -30,27 +32,63 @@ class HistoryLaptopController extends Controller
         return view('dashboard.history_laptop.create', compact('laptop', 'pegawai', 'unit'));
     }
 
-    public function store(Request $request)
+    public function store(HistoryLaptopRequest $request)
     {
-        $path = 'file:///D:/php/mas-dhifa/data/1.png';
-        header("Content-type: image/png");
-        dd(readfile($path));
-        //move image
-        $imageName = time()."_".$request->ba;
+        $pegawai = Pegawai::select('nip', 'id')->where('id', $request->pegawai_id)->get()->last();
+        $laptop = Pegawai::select('sn', 'id')->where('id', $request->laptop_id)->get()->last();
+        $imageName = $request->status . "-" . $pegawai['nip'] . "-" . $laptop['sn'] . "-" . Str::random(10) . time();
+
+        if($request->status == 'penyerahan') {
+            $status = 1;
+            HistoryLaptop::create([
+                'unit' => $request->unit,
+                'laptop_id' => $request->laptop_id,
+                'pegawai_id' => $request->pegawai_id,
+                'penyerahan' => $request->penyerahan,
+                'ba' => $imageName,
+                'status' => $status,
+            ]);
+        }
+
+        if ($request->status == 'rotasi') {
+            $status = 2;
+            $lastHistoryUser = HistoryLaptop::select('penyerahan')->where('laptop_id', $laptop['id'])->where('pegawai_id', $pegawai['id'])->whereNull('rotasi')->get()->last();
+            HistoryLaptop::create([
+                'unit' => $request->unit,
+                'laptop_id' => $request->laptop_id,
+                'pegawai_id' => $request->pegawai_id,
+                'penyerahan' => $lastHistoryUser['penyerahan'],
+                'rotasi' => $request->rotasi,
+                'ba' => $imageName,
+                'status' => $status,
+            ]);
+        }
+
+        if ($request->status == 'kembali') {
+            $status = 3;
+            $lastHistoryUser = HistoryLaptop::select('penyerahan', 'rotasi')->where('laptop_id', $laptop['id'])->where('pegawai_id', $pegawai['id'])->whereNull('kembali')->get()->last();
+
+                if ($lastHistoryUser['rotasi'] != null) {
+                    $rotasi = $lastHistoryUser['rotasi'];
+                } else {
+                    $rotasi = null;
+                }
+            HistoryLaptop::create([
+                'unit' => $request->unit,
+                'laptop_id' => $request->laptop_id,
+                'pegawai_id' => $request->pegawai_id,
+                'penyerahan' => $lastHistoryUser['penyerahan'],
+                'rotasi' => $rotasi,
+                'kembali' => $request->kembali,
+                'ba' => $imageName,
+                'status' => $status,
+            ]);
+        }
+
         $request->ba->move(public_path('assets/images/ba'), $imageName);
 
-        $pegawai = Pegawai::findOrFail($request->pegawai_id);
-        $unit = $pegawai->unit->nama_unit;
-
-
-
-        HistoryLaptop::create([
-            'unit' => $unit,
-            'laptop_id' => $request->laptop_id,
-            'pegawai_id' => $request->pegawai_id,
-            'penyerahan' => $request->penyerahan,
-            'ba' => $imageName,
-            'status' => 1,
+        Laptop::findOrFail($laptop['id'])->update([
+            'status' => $status
         ]);
 
         return redirect()->route('history-laptop.index');
