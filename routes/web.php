@@ -70,9 +70,10 @@ Route::prefix('dashboard')->group(function () {
         Route::get('/history-laptop', [HistoryLaptopController::class, 'index'])->name('history-laptop.index');
         Route::get('/history-laptop/create', [HistoryLaptopController::class, 'create'])->name('history-laptop.create');
         Route::post('/history-laptop/store', [HistoryLaptopController::class, 'store'])->name('history-laptop.store');
-        Route::post('/history-laptop/import/store', [HistoryLaptopController::class, 'import'])->name('history-laptop.import');
         Route::get('/history-laptop/{id}/history/pegawai', [HistoryLaptopController::class, 'showPegawai'])->name('history-laptop.detail.pegawai');
         Route::get('/history-laptop/{id}/history/laptop', [HistoryLaptopController::class, 'showLaptop'])->name('history-laptop.detail.laptop');
+        Route::post('/history-laptop/import/store', [HistoryLaptopController::class, 'import'])->name('history-laptop.import');
+        Route::get('/history-laptop/export', [HistoryLaptopController::class, 'export'])->name('history-laptop.export');
 
         Route::get('/report', [LaporanController::class, 'index'])->name('laporan.index');
     });

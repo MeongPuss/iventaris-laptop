@@ -23,23 +23,6 @@
             </div>
         </div>
         <!-- end page title -->
-
-        <div class="row">
-            <div class="col-12">
-                <div class="card-box">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="text-lg-right">
-                                <button type="button" class="btn btn-danger waves-effect waves-light" data-toggle="modal"
-                                    data-target="#custom-modal"><i class="mdi mdi-plus-circle mr-1"></i> Add New</button>
-                            </div>
-                        </div><!-- end col-->
-                    </div> <!-- end row -->
-                </div> <!-- end card-box -->
-            </div><!-- end col-->
-        </div>
-        <!-- end row -->
-
         <div class="row">
             @foreach ($detail as $item)
                 <div class="col-lg-4">

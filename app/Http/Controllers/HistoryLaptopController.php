@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\HistoryLaptopRequest;
 use App\Models\Unit;
 use App\Models\Laptop;
 use App\Models\Pegawai;
@@ -11,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Models\HistoryLaptop;
 use App\Imports\HistoryLaptopImport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\HistoryLaptopsExport;
+use App\Http\Requests\HistoryLaptopRequest;
 
 class HistoryLaptopController extends Controller
 {
@@ -150,5 +151,10 @@ class HistoryLaptopController extends Controller
         Excel::import(new HistoryLaptopImport, $file);
 
         return redirect()->route('history-laptop.index');
+    }
+
+    public function export()
+    {
+        return Excel::download(new HistoryLaptopsExport, 'history.xlsx');
     }
 }

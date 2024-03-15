@@ -34,22 +34,34 @@
 
         <div class="row">
             <div class="col-12">
+                <div class="card-box">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="text-lg-right">
+                                <a href="{{ route('history-laptop.export') }}" class="btn btn-rounded btn-success waves-effect waves-light" _blank><i
+                                        class="mdi mdi-plus-circle mr-1"></i> Laporan</a>
+                            </div>
+                        </div><!-- end col-->
+                    </div> <!-- end row -->
+                </div> <!-- end card-box -->
+            </div><!-- end col-->
+        </div>
+        <!-- end row -->
+
+        <div class="row">
+            <div class="col-12">
                 <div class="card">
                     <div class="card-body">
 
                         <div class="header-title">
                             <a href="{{ route('history-laptop.create') }}"
                                 class="btn btn-rounded btn-primary waves-effect waves-light">
-                                <span class="btn-label">
-                                    <i class="fas fa-plus-circle"></i>
-                                </span>
+                                <i class="fas fa-plus-circle"></i>
                                 Tambah
                             </a>
                             <button type="button" class="btn btn-rounded btn-info waves-effect waves-light"
                                 data-toggle="modal" data-target="#import-hitory-laptop">
-                                <span class="btn-label">
-                                    <i class="fe-upload-cloud"></i>
-                                </span>
+                                <i class="fe-upload-cloud"></i>
                                 Import
                             </button>
 
@@ -99,14 +111,12 @@
                                         <td>
                                             <a href="{{ route('history-laptop.detail.pegawai', ['id' => $history->pegawai_id]) }}"
                                                 class="btn btn-info btn-rounded waves-effect waves-light btn-sm">
-                                                <span class="btn-label"><i
-                                                        class="mdi mdi-alert-circle-outline"></i></span>Detail Pegawai
+                                                <i class="mdi mdi-alert-circle-outline"> </i> Detail Pegawai
                                             </a>
 
                                             <a href="{{ route('history-laptop.detail.laptop', ['id' => $history->laptop_id]) }}"
                                                 class="btn btn-info btn-rounded waves-effect waves-light btn-sm">
-                                                <span class="btn-label"><i
-                                                        class="mdi mdi-alert-circle-outline"></i></span>Detail Laptop
+                                                <i class="mdi mdi-alert-circle-outline"> </i> Detail Laptop
                                             </a>
                                         </td>
                                     </tr>
