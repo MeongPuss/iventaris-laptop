@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use App\Models\HistoryLaptop;
 use App\Imports\HistoryLaptopImport;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Session;
 
 class HistoryLaptopController extends Controller
 {
