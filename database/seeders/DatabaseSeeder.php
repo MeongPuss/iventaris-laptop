@@ -18,8 +18,10 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\User::factory()->create([
             'name' => 'Test User',
+            'nip' => '12345678',
             'email' => 'mail@mail.com',
-            'password' => Hash::make('12345678')
+            'password' => Hash::make('12345678'),
+            'role' => 1
         ]);
     }
 }

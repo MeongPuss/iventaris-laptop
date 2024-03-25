@@ -14,14 +14,16 @@ return new class extends Migration
         Schema::create('laptops', function (Blueprint $table) {
             $table->id();
             $table->string('sn');
-            $table->string('tipe');
-            $table->string('merek');
+            $table->string('tipe')->nullable();
+            $table->string('merek')->nullable();
             $table->date('garansi');
-            $table->string('processor');
-            $table->integer('ram');
-            $table->string('penyimpanan');
-            $table->string('remote');
-            $table->string('status');
+            $table->string('processor')->nullable();
+            $table->integer('ram')->nullable();
+            $table->string('penyimpanan')->nullable();
+            $table->string('remote')->nullable();
+            $table->string('status')->nullable();
+            $table->unsignedBigInteger('unit_id');
+            $table->foreign('unit_id')->references('id')->on('units')->restrictOnDelete()->cascadeOnUpdate();
             $table->softDeletes();
             $table->timestamps();
         });

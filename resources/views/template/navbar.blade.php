@@ -18,14 +18,16 @@
                             <a href="{{ route('unit.index') }}" class="dropdown-item"><i class="fe-map mr-1"></i> Unit</a>
                             <a href="{{ route('pegawai.index') }}" class="dropdown-item"><i class="fe-book"></i> Pegawai</a>
                             <a href="{{ route('laptops.index') }}" class="dropdown-item"><i class="fe-map mr-1"></i> Laptop</a>
-                            <a href="{{ route('it.index') }}" class="dropdown-item"><i class="fe-map mr-1"></i> ITS</a>
                         </div>
                     </li>
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="{{ route('history-laptop.index') }}">
-                            <i class="fe-book"></i> History
+                        <a class="nav-link dropdown-toggle arrow-none" href="{{ route('dashboard') }}" id="topnav-apps" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fe-archive"></i> Transaksi <div class="arrow-down"></div>
                         </a>
+                        <div class="dropdown-menu" aria-labelledby="topnav-apps">
+                            <a class="nav-link" href="{{ route('history-laptop.index') }}"> <i class="fe-book"></i> Laptop</a>
+                        </div>
                     </li>
 
                     <li class="nav-item">

@@ -27,6 +27,8 @@ class UnitRequest extends FormRequest
         if (Request::isMethod('PUT')) $namaUnit = 'required|min:5|max:30|unique:units,nama_unit,' . $this->id;
 
         return [
+            'unit_induk' => "required",
+            'unit_pelaksana' => "required",
             'nama_unit' => $namaUnit,
         ];
     }
@@ -34,6 +36,8 @@ class UnitRequest extends FormRequest
     public function attributes(): array
     {
         return [
+            'unit_induk' => "Unit Induk",
+            'unit_pelaksana' => "Unit Pelaksana",
             'nama_unit' => 'Nama Unit',
         ];
     }

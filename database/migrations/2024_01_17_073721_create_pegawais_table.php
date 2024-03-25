@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nip');
             $table->string('nama_pegawai');
+            $table->string('jabatan');
             $table->integer('status_pegawai');
             $table->unsignedBigInteger('unit_id');
             $table->foreign('unit_id')->references('id')->on('units')->restrictOnDelete()->cascadeOnUpdate();

@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Unit extends Model
 {
@@ -13,6 +12,7 @@ class Unit extends Model
 
     protected $table = 'units';
     protected $fillable = [
+        'unit_id',
         'nama_unit',
     ];
 
@@ -21,8 +21,13 @@ class Unit extends Model
         return $this->hasMany(Pegawai::class);
     }
 
-    public function itSupport(): BelongsToMany
+    public function unitsChild()
     {
-        return $this->belongsToMany(Itsupport::class, 'unit_itsupport', 'unit_id', 'its_id');
+        return $this->hasMany(Unit::class, 'unit_id');
+    }
+
+    public function unitsParent()
+    {
+        return $this->belongsTo(Unit::class, 'unit_id');
     }
 }

@@ -13,7 +13,7 @@ class UnitController extends Controller
 {
     public function index()
     {
-        $unit = Unit::all();
+        $unit = Unit::with('unitsParent')->get();
 
         $title = 'Hapus Unit';
         $text = "Apakah Anda yakin ingin menghapus?";
@@ -24,7 +24,12 @@ class UnitController extends Controller
 
     public function store(UnitRequest $request)
     {
+
+        $unit = ($request->unit_induk != "null" AND $request->unit_pelaksana == "null") ? $request->unit_induk : NULL ;
+        if($request->unit_induk != "null" AND $request->unit_pelaksana != "null") $unit = $request->unit_pelaksana;
+
         Unit::create([
+            'unit_id' => $unit,
             'nama_unit' => Str::upper($request->nama_unit),
         ]);
 
@@ -34,6 +39,7 @@ class UnitController extends Controller
     public function update(UnitRequest $request, string $id)
     {
         Unit::findOrFail($id)->update([
+            'unit_id' => $request->unit_id,
             'nama_unit' => Str::upper($request->nama_unit),
         ]);
 
@@ -57,5 +63,19 @@ class UnitController extends Controller
         Excel::import(new UnitImport, $file);
 
         return redirect()->route('unit.index')->with('success', 'Import data unit berhasil');
+    }
+
+    public function getUnitCreate($id)
+    {
+        $unitPelaksana = Unit::where('unit_id', $id)->get();
+        return response()->json($unitPelaksana);
+    }
+
+    public function getUnitEdit($id)
+    {
+        // $unitInduk = Unit::with('unitsParent')->where('unit_id', $unitId)->get();
+
+        $unitPelaksana = Unit::with('unitsParent')->where('id', $id)->get();
+        return response()->json($unitPelaksana);
     }
 }

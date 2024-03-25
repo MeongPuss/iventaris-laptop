@@ -29,8 +29,6 @@ Route::get('/', function () {
 Route::prefix('dashboard')->group(function () {
     Route::get('/login', [LoginController::class, 'login'])->name('dashboard.login');
     Route::post('/login', [LoginController::class, 'authuser'])->name('dashboard.authuser');
-    Route::get('/itsupport/login', [LoginController::class, 'loginitsupport'])->name('dashboard.loginitsupport');
-    Route::post('/itsupport/login', [LoginController::class, 'authitsupport'])->name('dashboard.authitsupport');
     Route::get('/logout', [LoginController::class, 'logout'])->name('dashboard.logout');
 
     Route::middleware(["auth.itsupport"])->group(function () {
@@ -41,6 +39,8 @@ Route::prefix('dashboard')->group(function () {
         Route::put('/unit/{id}/update', [UnitController::class, 'update'])->name('unit.update');
         Route::delete('/unit/{id}/delete', [UnitController::class, 'destroy'])->name('unit.destroy');
         Route::post('/unit/import/store', [UnitController::class, 'importStore'])->name('unit.import');
+        Route::get('/unit/{id}/unit-create', [UnitController::class, 'getUnitCreate'])->name('unit.get.create');
+        Route::get('/unit/{id}/unit-edit', [UnitController::class, 'getUnitEdit'])->name('unit.get.edit');
 
         Route::get('/pegawai', [PegawaiController::class, 'index'])->name('pegawai.index');
         Route::get('/pegawai/create', [PegawaiController::class, 'create'])->name('pegawai.create');
@@ -57,15 +57,6 @@ Route::prefix('dashboard')->group(function () {
         Route::put('/laptops/{id}/update', [LaptopController::class, 'update'])->name('laptops.update');
         Route::delete('/laptops/{id}/delete', [LaptopController::class, 'destroy'])->name('laptops.destroy');
         Route::post('/laptops/import/store', [LaptopController::class, 'importStore'])->name('laptops.import');
-
-        Route::get('/it-suport', [ItsupportController::class, 'index'])->name('it.index');
-        Route::get('/it-suport/crate', [ItsupportController::class, 'create'])->name('it.create');
-        Route::post('/it-suport/store', [ItsupportController::class, 'store'])->name('it.store');
-        Route::get('/it-suport/{id}/show', [ItsupportController::class, 'show'])->name('it.show');
-        Route::put('/it-suport/{id}/reset', [ItsupportController::class, 'resetPassword'])->name('it.resetPassword');
-        Route::get('/it-suport/{id}/edit', [ItsupportController::class, 'edit'])->name('it.edit');
-        Route::put('/it-suport/{id}/update', [ItsupportController::class, 'update'])->name('it.update');
-        Route::delete('/it-suport/{id}/delete', [ItsupportController::class, 'destroy'])->name('it.destroy');
 
         Route::get('/history-laptop', [HistoryLaptopController::class, 'index'])->name('history-laptop.index');
         Route::get('/history-laptop/create', [HistoryLaptopController::class, 'create'])->name('history-laptop.create');

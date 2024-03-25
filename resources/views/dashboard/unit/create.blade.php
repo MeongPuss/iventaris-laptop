@@ -10,9 +10,28 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="nama_unit" class="control-label">Nama Unit<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="nama_unit" id="nama_unit" placeholder="Input Nama Unit" autofocus>
-                        </div>                      
+                            <label for="unit_induk">Unit Induk<span class="text-danger">*</span></label>
+                            <select class="form-control" id="unit_induk" name="unit_induk">
+                                <option value="null">Tidak ada</option>
+                                @foreach ($unit as $units)
+                                    @if ($units->unit_id == null)
+                                        <option value="{{ $units->id }}">{{ $units->nama_unit }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="unit_pelaksana">Unit Pelaksana<span class="text-danger">*</span></label>
+                            <select class="form-control" id="unit_pelaksana" name="unit_pelaksana">
+                                <option value="null">Tidak ada</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="nama_unit" class="control-label">Nama Unit<span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="nama_unit" id="nama_unit"
+                                placeholder="Input Nama Unit" autofocus>
+                        </div>
                     </div>
                 </div>
             </div>

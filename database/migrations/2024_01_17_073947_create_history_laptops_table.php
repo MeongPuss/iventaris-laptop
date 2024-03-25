@@ -23,6 +23,8 @@ return new class extends Migration
             $table->foreign('laptop_id')->references('id')->on('laptops')->restrictOnDelete()->cascadeOnUpdate();
             $table->unsignedBigInteger('pegawai_id');
             $table->foreign('pegawai_id')->references('id')->on('pegawais')->restrictOnDelete()->cascadeOnUpdate();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->restrictOnDelete()->cascadeOnUpdate();
             $table->softDeletes();
             $table->timestamps();
         });

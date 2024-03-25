@@ -81,11 +81,15 @@
                                         <td> {{ $loop->iteration }} </td>
                                         <td> {{ $units->nama_unit }} </td>
                                         <td>
-                                            <button type="button"
-                                                class="btn btn-rounded btn-warning waves-effect waves-light btn-sm"
-                                                data-toggle="modal" data-target="#modal-update-{{ $units->id }}">
-                                                <span class="btn-label"><i class="mdi mdi-alert"></i></span>Ubah
-                                            </button>
+                                            <div id="update{{ $units->id }}"
+                                                value="{{ $units->id }} | {{ $units->unit_id }}"
+                                                style="display:inline-block;">
+                                                <button type="button"
+                                                    class="btn btn-rounded btn-warning waves-effect waves-light btn-sm update"
+                                                    data-toggle="modal" data-target="#modal-update-{{ $units->id }}">
+                                                    <span class="btn-label"><i class="mdi mdi-alert"></i></span>Ubah
+                                                </button>
+                                            </div>
                                             {{-- Modal Edit --}}
                                             <div id="modal-update-{{ $units->id }}" class="modal fade" tabindex="-1"
                                                 role="dialog" aria-labelledby="modalUpdate" aria-hidden="true"
@@ -148,5 +152,77 @@
             })
         }
     </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#unit_induk').on('change', function() {
+                let unitInduk = $(this).val();
+                if (unitInduk !== "null") {
+                    let route = "{{ route('unit.get.create', ':id') }}";
+                    route = route.replace(':id', unitInduk);
+                    $.ajax({
+                        url: route,
+                        type: 'GET',
+                        data: {
+                            '_token': '{{ csrf_token() }}'
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data) {
+                                $('#unit_pelaksana').empty();
+                                $('#unit_pelaksana').append(
+                                    '<option value="null">Tidak ada</option>');
+                                $.each(data, function(key, unitPelaksana) {
+                                    $('select[name="unit_pelaksana"]').append(
+                                        '<option value="' + unitPelaksana.id +
+                                        '">' + unitPelaksana.nama_unit +
+                                        '</option>'
+                                    );
+                                })
+                            }
+                        }
+                    })
+                } else {
+                    $('#unit_pelaksana').empty();
+                    $('#unit_pelaksana').append('<option value="null">Tidak ada</option>');
+                }
+            })
+        })
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('div[id^="update"]').on('click', function() {
+                let unitUpdate = $(this).attr('value');
+                console.log(unitUpdate);
+                //                 str = unitUpdate.split("/");
+
+                // console.log(str[str.length - 1]);
+                // console.log(str[str.length - 0]);
+                if (unitUpdate) {
+                    let route = "{{ route('unit.get.edit', ':id') }}";
+                    route = route.replace(':id', unitUpdate);
+                    $.ajax({
+                        url: route,
+                        type: 'GET',
+                        data: {
+                            '_token': '{{ csrf_token() }}'
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            console.log(data);
+                            $.each(data, function(key, unitUpdateNew) {
+                                console.log(unitUpdateNew.units_parent.nama_unit);
+                            })
+                        }
+                    })
+                } else {
+                    $('#unit_pelaksana').empty();
+                    $('#unit_pelaksana').append('<option value="null">Tidak ada</option>');
+                }
+            });
+        });
+    </script>
+
     @include('sweetalert::alert')
 @endsection
