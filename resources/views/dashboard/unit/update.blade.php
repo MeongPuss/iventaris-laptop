@@ -14,11 +14,6 @@
                             <label for="unit_induk">Unit Induk<span class="text-danger">*</span></label>
                             <select class="form-control" id="unit_induk1" name="unit_induk">
                                 <option value="null">Tidak ada</option>
-                                @foreach ($unit as $item)
-                                    @if ($item->unit_id == null)
-                                        <option value="{{ $item->id }}">{{ $item->nama_unit }}</option>
-                                    @endif
-                                @endforeach
                             </select>
                         </div>
                         <div class="form-group">

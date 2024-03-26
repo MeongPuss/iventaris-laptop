@@ -26,9 +26,6 @@ class LaptopController extends Controller
         return view('dashboard.laptop.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(LaptopRequest $request)
     {
         $penyimpanan = $request->penyimpanan." ".$request->kapasitas;
@@ -61,9 +58,6 @@ class LaptopController extends Controller
         return view('dashboard.laptop.update', compact('laptop', 'penyimpanan'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(LaptopRequest $request, string $id)
     {
         $penyimpanan = $request->penyimpanan." ".$request->kapasitas;

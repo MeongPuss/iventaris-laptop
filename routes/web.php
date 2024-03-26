@@ -40,6 +40,7 @@ Route::prefix('dashboard')->group(function () {
         Route::delete('/unit/{id}/delete', [UnitController::class, 'destroy'])->name('unit.destroy');
         Route::post('/unit/import/store', [UnitController::class, 'importStore'])->name('unit.import');
         Route::get('/unit/{id}/unit-create', [UnitController::class, 'getUnitCreate'])->name('unit.get.create');
+        // Route::get('/unit/{id}/unit-edit-pelaksana', [UnitController::class, 'getUnitPelaksana'])->name('unit.get.edit.pelaksana');
         Route::get('/unit/{id}/unit-edit', [UnitController::class, 'getUnitEdit'])->name('unit.get.edit');
 
         Route::get('/pegawai', [PegawaiController::class, 'index'])->name('pegawai.index');

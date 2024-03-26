@@ -82,7 +82,7 @@
                                         <td> {{ $units->nama_unit }} </td>
                                         <td>
                                             <div id="update{{ $units->id }}"
-                                                value="{{ $units->id }} | {{ $units->unit_id }}"
+                                                value="{{ $units->id }}/{{ $units->unit_id }}"
                                                 style="display:inline-block;">
                                                 <button type="button"
                                                     class="btn btn-rounded btn-warning waves-effect waves-light btn-sm update"
@@ -195,15 +195,14 @@
             $('div[id^="update"]').on('click', function() {
                 let unitUpdate = $(this).attr('value');
                 console.log(unitUpdate);
-                //                 str = unitUpdate.split("/");
-
-                // console.log(str[str.length - 1]);
-                // console.log(str[str.length - 0]);
+                str = unitUpdate.split("/");
+                console.log(str[1]);
+                console.log(str[0]);
                 if (unitUpdate) {
-                    let route = "{{ route('unit.get.edit', ':id') }}";
-                    route = route.replace(':id', unitUpdate);
+                    let routeInduk = "{{ route('unit.get.edit', ':id') }}";
+                    routeInduk = routeInduk.replace(':id', str[1]);
                     $.ajax({
-                        url: route,
+                        url: routeInduk,
                         type: 'GET',
                         data: {
                             '_token': '{{ csrf_token() }}'
@@ -211,8 +210,35 @@
                         dataType: 'json',
                         success: function(data) {
                             console.log(data);
-                            $.each(data, function(key, unitUpdateNew) {
-                                console.log(unitUpdateNew.units_parent.nama_unit);
+                            $.each(data, function(key, unitInduk) {
+                                console.log(unitInduk.units_parent.nama_unit);
+                                console.log(unitInduk.nama_unit);
+                                if (data) {
+                                    $('#unit_pelaksana1').empty();
+                                    $('#unit_induk1').empty();
+                                    $('#unit_pelaksana1').append(
+                                        '<option value="null">Tidak ada</option>');
+                                    $('#unit_induk1').append(
+                                        '<option value="null">Tidak ada</option>');
+                                    $.each(data, function(key, unitInduk) {
+                                        $('select[name="unit_pelaksana"]')
+                                            .append(
+                                                '<option value="' +
+                                                unitInduk.id +
+                                                '" selected>' + unitInduk
+                                                .nama_unit +
+                                                '</option>'
+                                            );
+                                        $('select[name="unit_induk"]')
+                                            .append(
+                                                '<option value="' +
+                                                unitInduk.units_parent.id +
+                                                '" selected>' + unitInduk
+                                                .units_parent.nama_unit +
+                                                '</option>'
+                                            );
+                                    })
+                                }
                             })
                         }
                     })

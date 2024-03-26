@@ -71,11 +71,14 @@ class UnitController extends Controller
         return response()->json($unitPelaksana);
     }
 
+    // public function getUnitPelaksana($id)
+    // {
+    //     $unitPelaksana = Unit::with('unitsParent')->where('id', $id)->get();
+    //     return response()->json($unitPelaksana);
+    // }
     public function getUnitEdit($id)
     {
-        // $unitInduk = Unit::with('unitsParent')->where('unit_id', $unitId)->get();
-
-        $unitPelaksana = Unit::with('unitsParent')->where('id', $id)->get();
-        return response()->json($unitPelaksana);
+        $unitInduk = Unit::with('unitsParent')->where('id', $id)->get();
+        return response()->json($unitInduk);
     }
 }
